@@ -41,9 +41,13 @@ if(!partido){
     return res.status(400).send({message:"Candidato não tem partido pode jogar no lixo"})
 }
 
-// validação de idade
+// validação de Maior de idade
 if(idade < 18){
     return res.status(400).send({message: nome + " Não pode participar dos debates pois ainda é menor de 18 anos e tem " + idade + " anos"})
+}
+//validação de idade
+if(!idade){
+    return res.status(400).send({message:"Candidato não tem idade pode jogar no lixo"})
 }
 
 // validação de todas as respostas
@@ -68,4 +72,25 @@ candidatos.push(novoCandidato)
 return res.status(201).send("Candidato criado com sucesso")
 
 });
+
+// Rota para buscar uma emoção pelo id
+candidatosRoutes.get("/:id", (req, res) => {
+    const { id } = req.params;
+
+    console.log(id);
+    const candidato = candidatos.find((candidate) => candidate .id == id)
+
+    if(!candidato) {
+        return res.status(404).send({
+            message : "Candidato não encontrado!",
+        })
+    }
+
+    return res.status(200).send({
+        message: "Candidato encontrado", candidato,
+    })
+});
+
+
+
 export default candidatosRoutes
